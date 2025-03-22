@@ -1,65 +1,65 @@
-date = []
-close = []
-data_length = 0
-
-macd = []
-signal = []
+import matplotlib.pyplot as plt
 
 def read_data(filename):
     global data_length
-    data_length = 0
-    date.clear()
-    close.clear()
+    close = []
 
     file = open(filename, 'r')
     for line in file:
         line = line.split("\t")
-        date.append(line[0])
         close.append(float(line[4]))
-        data_length += 1
+    return close
 
-def debug_data():
-    for i in range(0, data_length):
-        print(i+1,":\t", date[i],"\t",close[i])
+def debug_data(data):
+    for i in range(0, len(data)):
+        print(i+1,":\t", data[i])
 
-def EMA(n, i, data, depth=0):
+def EMA(n, data):
+    ema = []
     alfa = 2/(n+1)
 
-    if i == 0:
-        return data[0]
-    elif i < n:
-        return sum(data[0:i+1]) / (i+1)
-    else:
-        if depth == n:
-            return alfa*data[i]
-        return alfa*data[i] + (1-alfa) * EMA(n, i-1, data, depth+1)
+    for i in range(0, len(data)):
+        if(i==0):
+            ema.append(data[i])
+        #elif(i<=n):
+        #    ema.append(sum(data[0:i])/i)
+        else:
+            ema.append(alfa * data[i] + (1 - alfa) * ema[i-1])
+    return ema
 
-# MACD values from the first 26 days shouldn't be analyzed as it is highly unstable
-def MACD(i):
-    return EMA(12,i, close) - EMA(26, i, close)
 
-def SIGNAL(i):
-    return EMA(9, i, macd)
+# MACD values from the first 2N days (2*26=52) shouldn't be analyzed as they can be unstable
+def MACD(close):
+    macd = []
+    ema12 = EMA(12, close)
+    ema26 = EMA(26, close)
 
-def calculate_MACD():
-    macd.clear()
-    for i in range(0, data_length):
-        macd.append(MACD(i))
+    for i in range(0, len(close)):
+        macd.append(ema12[i] - ema26[i])
+    return macd
 
-def calculate_SIGNAL():
-    signal.clear()
-    for i in range(0, data_length):
-        signal.append(SIGNAL(i))
+def SIGNAL(macd):
+    signal = EMA(9, macd)
+    return signal
 
 def main():
     filename = "./data/GOLD-USD-1D.csv"
-    read_data(filename)
-    #debug_data()
+    close = read_data(filename)
+    #debug_data(close)
 
-    calculate_MACD()
-    calculate_SIGNAL()
 
+    #ema26 = EMA(26, close)
+    #print(ema26)
+    #plt.plot(range(0, 500), ema26[0:500])
+    #plt.plot(range(0, 500), close[0:500])
+
+
+    macd = MACD(close)
+    signal = SIGNAL(macd)
     #print(macd)
     #print(signal)
+    plt.plot(range(50, 150), macd[50: 150])
+    plt.plot(range(50, 150), signal[50: 150])
+    plt.show()
 
 main()
