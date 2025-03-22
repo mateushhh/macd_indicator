@@ -25,7 +25,6 @@ def draw_data(data, x0=0, x1=0):
     plt.grid(True)
     plt.show()
 
-
 # EMA values from the first 2N days shouldn't be analyzed as they can be unstable
 def EMA(n, data):
     ema = []
@@ -39,7 +38,6 @@ def EMA(n, data):
         else:
             ema.append(alfa * data[i] + (1 - alfa) * ema[i-1])
     return ema
-
 
 # MACD values from the first 2N days (2*26=52) shouldn't be analyzed as they can be unstable
 def MACD(close):
@@ -75,7 +73,6 @@ def get_intersections(macd, signal):
 
     return intersections
 
-
 def draw_MACD(macd, signal, x0=0, x1=0):
     # Plotting lines
     if x0==0 and x1==0:
@@ -98,7 +95,6 @@ def draw_MACD(macd, signal, x0=0, x1=0):
     plt.grid(True)
     plt.show()
 
-
 def draw_balance(balance, x0=0, x1=0):
     if x0==0 and x1==0:
         plt.plot(balance, 'g', label="DATA")
@@ -111,7 +107,6 @@ def draw_balance(balance, x0=0, x1=0):
     plt.legend(loc='lower right')
     plt.grid(True)
     plt.show()
-
 
 def simulate(intersections, close, start_money=1000):
     pretransaction_money = money = start_money
@@ -138,7 +133,6 @@ def simulate(intersections, close, start_money=1000):
                     transactions[0] += 1
                 else:
                     transactions[1] += 1
-                print(f"{i}:\t{pretransaction_money:.2f} -> {money:.2f}")
 
         if(money == 0):
             balance.append([amount_of_goods * close[i]])
