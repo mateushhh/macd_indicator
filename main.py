@@ -156,19 +156,21 @@ def draw_everything(close, macd, signal, x0=0, x1=0):
     intersections = get_intersections(macd, signal)
     balance = simulate(intersections, close)
 
+    draw_MACD(macd, signal, x0, x1)
     draw_data(close, x0, x1)
     draw_balance(balance, x0, x1)
-    draw_MACD(macd, signal, x0, x1)
+
 
 def main():
     filename = "./data/GOLD-USD-1D.csv"
+    print("Data used:",filename)
 
     close = read_data(filename)
     macd = MACD(close)
     signal = SIGNAL(macd)
-    x0 = 500
-    x1 = 1000
+    x0 = 0
+    x1 = 0
 
-    draw_everything(close, macd, signal, x0, x1)
+    draw_everything(close, macd, signal, x0,x1)
 
 main()
