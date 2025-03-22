@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 
 def read_data(filename):
-    global data_length
     close = []
 
     file = open(filename, 'r')
@@ -14,6 +13,7 @@ def debug_data(data):
     for i in range(0, len(data)):
         print(i+1,":\t", data[i])
 
+# EMA values from the first 2N days shouldn't be analyzed as they can be unstable
 def EMA(n, data):
     ema = []
     alfa = 2/(n+1)
@@ -42,24 +42,48 @@ def SIGNAL(macd):
     signal = EMA(9, macd)
     return signal
 
+def get_intersections(macd, signal):
+    intersections = []
+    for i in range(1, len(macd)):
+        # Sell Signal - MACD crossing SIGNAL from the top
+        if(macd[i-1] > signal[i-1]):
+            if(macd[i] < signal[i]):
+                intersections.append([i, macd[i], 'vr'])
+
+        # Buy Signal - MACD crossing SIGNAL from the top
+        elif (macd[i - 1] < signal[i - 1]):
+            if (macd[i] > signal[i]):
+                intersections.append([i, macd[i], '^g'])
+
+    return intersections
+
+
+def draw_MACD(macd, signal, x0=0, x1=0):
+    # Plotting lines
+    if x0==0 and x1==0:
+        plt.plot(macd, 'b')
+        plt.plot(signal, 'r')
+    plt.plot(range(x0, x1), macd[x0 : x1], 'b')
+    plt.plot(range(x0, x1), signal[x0 : x1], 'r')
+
+    # Plotting transaction points
+    intersections = get_intersections(macd, signal)
+    for point in intersections:
+        if point[0]>=x0 and point[0]<=x1:
+            plt.plot(point[0], point[1], point[2], markersize=8)
+    plt.show()
+
+
 def main():
     filename = "./data/GOLD-USD-1D.csv"
     close = read_data(filename)
-    #debug_data(close)
-
-
-    #ema26 = EMA(26, close)
-    #print(ema26)
-    #plt.plot(range(0, 500), ema26[0:500])
-    #plt.plot(range(0, 500), close[0:500])
-
 
     macd = MACD(close)
     signal = SIGNAL(macd)
-    #print(macd)
-    #print(signal)
-    plt.plot(range(50, 150), macd[50: 150])
-    plt.plot(range(50, 150), signal[50: 150])
+    intersections = get_intersections(macd, signal)
+
+    draw_MACD(macd, signal, 0,356)
     plt.show()
+
 
 main()
