@@ -35,7 +35,24 @@ python script.py
 ### 3. Interpretation of Plots
 - **Price Data**: Shows the closing price trend over time
 - **MACD & Signal Line**: Identifies buy (green triangle) and sell (red triangle) signals.
+- **Price Data with Buy & Sell Signals**: Shows the closing price trend over time
 - **Balance Evolution**: Displays the performance of simulated trading.
+
+## Example Output 
+```python
+Data used: ./data/GOLD-USD-1D.csv
+
+Total transactions: 207
+Profitable transactions: 78
+Failed transactions: 129
+
+Money before transactions: 1000.00
+Money after transactions: 2080.92
+Earnings: 1080.92
+Profit [%]: 208.09
+
+4 plots generated (Data, Macd, DataWithBuySellMarks, Simulation)
+```
 
 ## Functions
 ### `read_data(filename)`
@@ -67,22 +84,6 @@ Visualizes the account balance changes over time.
 
 ### `draw_everything(close, macd, signal, x0=0, x1=0)`
 Combines all visualizations into one comprehensive analysis.
-
-## Example Output 
-```python
-Data used: ./data/GOLD-USD-1D.csv
-
-Total transactions: 207
-Profitable transactions: 78
-Failed transactions: 129
-
-Money before transactions: 1000.00
-Money after transactions: 2080.92
-Earnings: 1080.92
-Profit [%]: 208.09
-
-4 plots generated (Data, MACD, DataWithBuySellMarks, Simulation)
-```
 
 ## Notes 📜
 - The first **2N** days of EMA calculations may be unstable.
