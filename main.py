@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+
 def read_data(filename):
     close = []
 
@@ -9,15 +10,24 @@ def read_data(filename):
         close.append(float(line[4]))
     return close
 
+
 def debug_data(data):
     for i in range(0, len(data)):
-        print(i+1,":\t", data[i])
+        print(i + 1, ":\t", data[i])
 
-def draw_data(data, x0=0, x1=0):
-    if x0==0 and x1==0:
+
+def draw_data(data, intersections, x0=0, x1=0):
+    plt.figure(figsize=(14, 6))
+    if x0 == 0 and x1 == 0:
         plt.plot(data, 'k', label="DATA")
     else:
-        plt.plot(range(x0, x1), data[x0 : x1], 'k', label="DATA")
+        plt.plot(range(x0, x1), data[x0: x1], 'k', label="DATA")
+
+    # Plotting transaction points
+    for point in intersections:
+        if point[0] >= x0 and point[0] <= x1:
+            plt.plot(point[0], data[point[0]], point[2], markersize=8)
+
     plt.xlabel("TIME IN DAYS")
     plt.ylabel("DATA VALUES")
     plt.title("DATA VALUES IN TIME")
@@ -25,19 +35,19 @@ def draw_data(data, x0=0, x1=0):
     plt.grid(True)
     plt.show()
 
+
 # EMA values from the first 2N days shouldn't be analyzed as they can be unstable
 def EMA(n, data):
     ema = []
-    alfa = 2/(n+1)
+    alfa = 2 / (n + 1)
 
     for i in range(0, len(data)):
-        if(i==0):
+        if (i == 0):
             ema.append(data[i])
-        #elif(i<=n):
-        #    ema.append(sum(data[0:i])/i)
         else:
-            ema.append(alfa * data[i] + (1 - alfa) * ema[i-1])
+            ema.append(alfa * data[i] + (1 - alfa) * ema[i - 1])
     return ema
+
 
 # MACD values from the first 2N days (2*26=52) shouldn't be analyzed as they can be unstable
 def MACD(close):
@@ -49,16 +59,18 @@ def MACD(close):
         macd.append(ema12[i] - ema26[i])
     return macd
 
+
 def SIGNAL(macd):
     signal = EMA(9, macd)
     return signal
+
 
 def get_intersections(macd, signal):
     intersections = []
     for i in range(1, len(macd)):
         # Sell Signal - MACD crossing SIGNAL from the top
-        if(macd[i-1] > signal[i-1]):
-            if(macd[i] < signal[i]):
+        if (macd[i - 1] > signal[i - 1]):
+            if (macd[i] < signal[i]):
                 intersections.append([i, macd[i], 'vr'])
 
         # Buy Signal - MACD crossing SIGNAL from the top
@@ -73,19 +85,21 @@ def get_intersections(macd, signal):
 
     return intersections
 
+
 def draw_MACD(macd, signal, x0=0, x1=0):
     # Plotting lines
-    if x0==0 and x1==0:
+    plt.figure(figsize=(14, 6))
+    if x0 == 0 and x1 == 0:
         plt.plot(macd, 'b', label="MACD")
         plt.plot(signal, 'r', label="SIGNAL")
     else:
-        plt.plot(range(x0, x1), macd[x0 : x1], 'b', label="MACD")
-        plt.plot(range(x0, x1), signal[x0 : x1], 'r', label="SIGNAL")
+        plt.plot(range(x0, x1), macd[x0: x1], 'b', label="MACD")
+        plt.plot(range(x0, x1), signal[x0: x1], 'r', label="SIGNAL")
 
     # Plotting transaction points
     intersections = get_intersections(macd, signal)
     for point in intersections:
-        if point[0]>=x0 and point[0]<=x1:
+        if point[0] >= x0 and point[0] <= x1:
             plt.plot(point[0], point[1], point[2], markersize=8)
 
     plt.xlabel("TIME IN DAYS")
@@ -95,11 +109,13 @@ def draw_MACD(macd, signal, x0=0, x1=0):
     plt.grid(True)
     plt.show()
 
+
 def draw_balance(balance, x0=0, x1=0):
-    if x0==0 and x1==0:
-        plt.plot(balance, 'g', label="DATA")
+    plt.figure(figsize=(14, 6))
+    if x0 == 0 and x1 == 0:
+        plt.plot(balance, 'g', label="BALANCE")
     else:
-        plt.plot(range(x0, x1), balance[x0: x1], 'g', label="DATA")
+        plt.plot(range(x0, x1), balance[0: x1 - x0], 'g', label="BALANCE")
 
     plt.xlabel("TIME IN DAYS")
     plt.ylabel("ACCOUNT BALANCE")
@@ -108,15 +124,19 @@ def draw_balance(balance, x0=0, x1=0):
     plt.grid(True)
     plt.show()
 
-def simulate(intersections, close, start_money=1000):
+
+def simulate(intersections, close, start_money=1000, x0=0, x1=0):
     pretransaction_money = money = start_money
     amount_of_goods = 0
     transactions = [0, 0]  # [successful, failed]
     balance = []  # Money balance at i-time
 
     intersection_dict = {point[0]: point for point in intersections}
-
-    for i in range(len(close)):
+    if x0 == 0 and x1 == 0:
+        days = range(len(close))
+    else:
+        days = range(x0, x1)
+    for i in days:
         if i in intersection_dict:
             point = intersection_dict[i]
 
@@ -134,11 +154,12 @@ def simulate(intersections, close, start_money=1000):
                 else:
                     transactions[1] += 1
 
-        if(money == 0):
-            balance.append([amount_of_goods * close[i]])
+        if (money == 0):
+            balance.append(amount_of_goods * close[i])
         else:
-            balance.append([money])
+            balance.append(money)
 
+    money = balance[-1]
     # Stats
     print(f"\nTotal transactions: {transactions[0] + transactions[1]}")
     print(f"Profitable transactions: {transactions[0]}")
@@ -151,26 +172,28 @@ def simulate(intersections, close, start_money=1000):
 
     return balance
 
-#x0=0 and x1=0 to get full graph
+
+# x0=0 and x1=0 to get full graph
 def draw_everything(close, macd, signal, x0=0, x1=0):
     intersections = get_intersections(macd, signal)
-    balance = simulate(intersections, close)
+    balance = simulate(intersections, close, 1000, x0, x1)
 
     draw_MACD(macd, signal, x0, x1)
-    draw_data(close, x0, x1)
+    draw_data(close, intersections, x0, x1)
     draw_balance(balance, x0, x1)
 
 
 def main():
     filename = "./data/GOLD-USD-1D.csv"
-    print("Data used:",filename)
+    print("Data used:", filename)
 
     close = read_data(filename)
     macd = MACD(close)
     signal = SIGNAL(macd)
     x0 = 0
-    x1 = 0
+    x1 = 1000
 
-    draw_everything(close, macd, signal, x0,x1)
+    draw_everything(close, macd, signal, x0, x1)
+
 
 main()
