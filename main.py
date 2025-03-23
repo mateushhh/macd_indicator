@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 
-
 def read_data(filename):
     close = []
 
@@ -16,17 +15,18 @@ def debug_data(data):
         print(i + 1, ":\t", data[i])
 
 
-def draw_data(data, intersections, x0=0, x1=0):
+def draw_data(data, intersections=None, x0=0, x1=0):
     plt.figure(figsize=(14, 6))
     if x0 == 0 and x1 == 0:
         plt.plot(data, 'k', label="DATA")
     else:
         plt.plot(range(x0, x1), data[x0: x1], 'k', label="DATA")
 
-    # Plotting transaction points
-    for point in intersections:
-        if point[0] >= x0 and point[0] <= x1:
-            plt.plot(point[0], data[point[0]], point[2], markersize=8)
+    # Plotting transaction points (if intersections are provided and not empty)
+    if intersections:
+        for point in intersections:
+            if point[0] >= x0 and point[0] <= x1:
+                plt.plot(point[0], data[point[0]], point[1], markersize=8)
 
     plt.xlabel("TIME IN DAYS")
     plt.ylabel("DATA VALUES")
@@ -71,16 +71,16 @@ def get_intersections(macd, signal):
         # Sell Signal - MACD crossing SIGNAL from the top
         if (macd[i - 1] > signal[i - 1]):
             if (macd[i] < signal[i]):
-                intersections.append([i, macd[i], 'vr'])
+                intersections.append([i, 'vr'])
 
         # Buy Signal - MACD crossing SIGNAL from the top
         elif (macd[i - 1] < signal[i - 1]):
             if (macd[i] > signal[i]):
-                intersections.append([i, macd[i], '^g'])
+                intersections.append([i, '^g'])
 
-    if intersections[0][2] == 'vr':
+    if intersections[0][1] == 'vr':
         intersections.pop(0)
-    if intersections[-1][2] == '^g':
+    if intersections[-1][1] == '^g':
         intersections.pop(-1)
 
     return intersections
@@ -100,7 +100,7 @@ def draw_MACD(macd, signal, x0=0, x1=0):
     intersections = get_intersections(macd, signal)
     for point in intersections:
         if point[0] >= x0 and point[0] <= x1:
-            plt.plot(point[0], point[1], point[2], markersize=8)
+            plt.plot(point[0], macd[point[0]], point[1], markersize=8)
 
     plt.xlabel("TIME IN DAYS")
     plt.ylabel("FUNCTION VALUES")
@@ -141,7 +141,7 @@ def simulate(intersections, close, start_money=1000, x0=0, x1=0):
             point = intersection_dict[i]
 
             # Buying
-            if point[2] == '^g':
+            if point[1] == '^g':
                 pretransaction_money = money
                 amount_of_goods = money / close[i]
                 money = 0
@@ -178,13 +178,14 @@ def draw_everything(close, macd, signal, x0=0, x1=0):
     intersections = get_intersections(macd, signal)
     balance = simulate(intersections, close, 1000, x0, x1)
 
+    draw_data(close, x0=x0, x1=x1)
     draw_MACD(macd, signal, x0, x1)
-    draw_data(close, intersections, x0, x1)
+    draw_data(close, intersections, x0=x0, x1=x1)
     draw_balance(balance, x0, x1)
 
 
 def main():
-    filename = "./data/GOLD-USD-1D.csv"
+    filename = "./data/SILVER-USD-1D.csv"
     print("Data used:", filename)
 
     close = read_data(filename)

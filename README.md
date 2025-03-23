@@ -22,8 +22,9 @@ pip install matplotlib
 
 ## Usage ▶️
 ### 1. Prepare Data
-Ensure you have a properly formatted data file (e.g., `GOLD-USD-1D.csv`) with **tab-separated values** where:
+Ensure you have a properly formatted data file with **tab-separated values** where:
 - The **5th column** (index `4` in zero-based indexing) represents the closing price.
+This is standard file format if you use data from **forexsb.com/historical-forex-data** which I used to get example data.
 
 ### 2. Run the Program
 Execute the script using:
@@ -32,7 +33,7 @@ python script.py
 ```
 
 ### 3. Interpretation of Plots
-- **Price Data**: Shows the closing price trend over time.
+- **Price Data**: Shows the closing price trend over time
 - **MACD & Signal Line**: Identifies buy (green triangle) and sell (red triangle) signals.
 - **Balance Evolution**: Displays the performance of simulated trading.
 
@@ -84,7 +85,3 @@ Profit [%]: 208.09
 ## Notes 📜
 - The first **2N** days of EMA calculations may be unstable.
 - The simulation assumes all-in trading without risk management strategies.
-
-## License
-This project is released under the MIT License.
-
