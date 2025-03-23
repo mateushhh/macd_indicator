@@ -80,6 +80,8 @@ Money before transactions: 1000.00
 Money after transactions: 2080.92
 Earnings: 1080.92
 Profit [%]: 208.09
+
+4 plots generated (Data, MACD, DataWithBuySellMarks, Simulation)
 ```
 
 ## Notes 📜
