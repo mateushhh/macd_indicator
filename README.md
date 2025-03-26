@@ -62,12 +62,15 @@ Net profit: $1080.92
 Return on investment: 208.09%
 ```
 
-```md
 ![Gold Values](https://github.com/mateushhh/macd_indicator/blob/master/data/example_graphs/gold-usd-1d-values.jpg?raw=true)
+---
 ![MACD Values](https://github.com/mateushhh/macd_indicator/blob/master/data/example_graphs/gold-usd-1d-macd.jpg?raw=true)
+---
 ![Buy & Sell](https://github.com/mateushhh/macd_indicator/blob/master/data/example_graphs/gold-usd-1d-buysell.jpg?raw=true)
+---
 ![Simulation](https://github.com/mateushhh/macd_indicator/blob/master/data/example_graphs/gold-usd-1d-simulation.jpg?raw=true)
-```
+---
+
 
 ---
 
