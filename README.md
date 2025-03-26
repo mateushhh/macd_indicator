@@ -63,10 +63,10 @@ Return on investment: 208.09%
 ```
 
 ```md
-![Gold Values](data/example_graphs/gold-usd-1d-values.jpg)
-![MACD Values](data/example_graphs/gold-usd-1d-macd.jpg)
-![Buy & Sell](data/example_graphs/gold-usd-1d-buysell.jpg)
-![Simulation](data/example_graphs/gold-usd-1d-simulation.jpg)
+![Gold Values](https://github.com/mateushhh/macd_indicator/blob/main/data/example_graphs/gold-usd-1d-values.jpg?raw=true)
+![MACD Values](https://github.com/mateushhh/macd_indicator/blob/main/data/example_graphs/gold-usd-1d-macd.jpg?raw=true)
+![Buy & Sell](https://github.com/mateushhh/macd_indicator/blob/main/data/example_graphs/gold-usd-1d-buysell.jpg?raw=true)
+![Simulation](https://github.com/mateushhh/macd_indicator/blob/main/data/example_graphs/gold-usd-1d-simulation.jpg?raw=true)
 ```
 
 ---
