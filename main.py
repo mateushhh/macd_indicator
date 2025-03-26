@@ -185,7 +185,7 @@ def draw_everything(close, macd, signal, x0=0, x1=0):
 
 
 def main():
-    filename = "./data/SILVER-USD-1D.csv"
+    filename = "./data/GOLD-USD-1D.csv"
     print("Data used:", filename)
 
     close = read_data(filename)
