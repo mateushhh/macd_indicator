@@ -43,6 +43,11 @@ pip install matplotlib
    - **MACD & SIGNAL** – displays buy and sell signals
    - **Portfolio Simulation** – visualizes how the portfolio value evolves
 
+## Important Notes 📜
+- The first **2N** days of MACD and SIGNAL values may be unstable.
+- The simulation does not account for transaction fees.
+- The strategy works best in long-term market trends.
+
 ## Example Output 🏆
 ```python
 Data file: ./data/GOLD-USD-1D.csv
@@ -57,10 +62,12 @@ Net profit: $1080.92
 Return on investment: 208.09%
 ```
 
-## Important Notes 📜
-- The first **2N** days of MACD and SIGNAL values may be unstable.
-- The simulation does not account for transaction fees.
-- The strategy works best in long-term market trends.
+```md
+    ![Gold Values](data/example_graphs/gold-usd-1d-values.jpg)
+    ![MACD Values](data/example_graphs/gold-usd-1d-macd.jpg)
+    ![Buy & Sell](data/example_graphs/gold-usd-1d-buysell.jpg)
+    ![Simulation](data/example_graphs/gold-usd-1d-simulation.jpg)
+```
 
 ---
 
