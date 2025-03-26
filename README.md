@@ -1,90 +1,89 @@
-# MACD Trading Strategy Simulation
+# MACD Trading Strategy Visualisation 📊
 
-## Overview 📈
-This project implements a simple trading strategy based on the **Moving Average Convergence Divergence (MACD)** indicator. It reads financial data, calculates the MACD and Signal line, identifies buy and sell signals, and simulates trading performance over time.
+## Project Overview 🛠️
+This project implements a trading strategy based on the **MACD (Moving Average Convergence Divergence)** indicator. The algorithm analyzes financial market data, identifies buy and sell signals, and simulates trading decisions, presenting results through visualizations.
 
-## Features 🚀
-- Reads financial data from a `.csv` file.
-- Calculates **Exponential Moving Average (EMA)**.
-- Computes the **MACD** and **Signal** line.
-- Identifies **buy** and **sell** signals based on MACD crossover.
-- Simulates trading decisions and tracks balance evolution.
-- Plots relevant financial data and indicators.
+## How Does MACD Work? 📈
+MACD helps assess market trends by analyzing two exponential moving averages:
+- **MACD Line**: The difference between the 12-period and 26-period EMA (Exponential Moving Average)
+- **SIGNAL Line**: A 9-period EMA of the MACD values
+
+The crossovers of these lines generate trading signals:
+- 📈 **Buy** – when MACD crosses SIGNAL from below
+- 📉 **Sell** – when MACD crosses SIGNAL from above
+
+## Features 💸
+- Reads market data from a `.csv` file
+- Calculates **EMA, MACD, and SIGNAL**
+- Detects buy and sell signals
+- Simulates trading activity and tracks portfolio value
+- Generates charts with transaction markers and performance analysis
 
 ## Requirements 🔧
 - Python 3.x
-- `matplotlib` (for plotting)
+- `matplotlib` (for data visualization)
 
-Install required dependencies using:
+Install dependencies:
 ```sh
 pip install matplotlib
 ```
 
 ## Usage ▶️
-### 1. Prepare Data
-Ensure you have a properly formatted data file with **tab-separated values** where:
-- The **5th column** (index `4` in zero-based indexing) represents the closing price.
-This is standard file format if you use data from **forexsb.com/historical-forex-data** which I used to get example data.
+1. **Prepare Data**
+   - The `.csv` file should contain market data with closing prices in the **5th column** (index `4`).
+   - Example data can be obtained from **forexsb.com/historical-forex-data**.
 
-### 2. Run the Program
-Execute the script using:
-```sh
-python script.py
-```
+2. **Run the Script**
+   ```sh
+   python main.py
+   ```
 
-### 3. Interpretation of Plots
-- **Price Data**: Shows the closing price trend over time
-- **MACD & Signal Line**: Identifies buy (green triangle) and sell (red triangle) signals.
-- **Price Data with Buy & Sell Signals**: Shows the closing price trend over time
-- **Balance Evolution**: Displays the performance of simulated trading.
+3. **Analyze Results**
+   - **Price Chart** – shows asset value fluctuations
+   - **MACD & SIGNAL** – displays buy and sell signals
+   - **Portfolio Simulation** – visualizes how the portfolio value evolves
 
-## Example Output 
+## Example Output 🏆
 ```python
-Data used: ./data/GOLD-USD-1D.csv
+Data file: ./data/GOLD-USD-1D.csv
 
 Total transactions: 207
 Profitable transactions: 78
 Failed transactions: 129
 
-Money before transactions: 1000.00
-Money after transactions: 2080.92
-Earnings: 1080.92
-Profit [%]: 208.09
-
-4 plots generated (Data, Macd, DataWithBuySellMarks, Simulation)
+Initial capital: $1000.00
+Final capital: $2080.92
+Net profit: $1080.92
+Return on investment: 208.09%
 ```
 
-## Functions
-### `read_data(filename)`
-Reads financial data and extracts the closing prices.
+## Important Notes 📜
+- The first **2N** days of MACD and SIGNAL values may be unstable.
+- The simulation does not account for transaction fees.
+- The strategy works best in long-term market trends.
 
-### `EMA(n, data)`
-Computes the Exponential Moving Average for a given period `n`.
+---
 
-### `MACD(close)`
-Calculates the MACD values based on EMA(12) and EMA(26).
+## Functions 🔍
+```python
+# Reads market data and extracts closing prices.
+def read_data(filename)
 
-### `SIGNAL(macd)`
-Computes the Signal line using EMA(9) of the MACD values.
+# Computes the exponential moving average for a given period `n`.
+def EMA(n, data)
 
-### `get_intersections(macd, signal)`
-Identifies buy and sell signals based on MACD crossover.
+# Calculates MACD values based on EMA(12) and EMA(26) of the closing prices.
+def MACD(close)
 
-### `simulate(intersections, close, start_money=1000)`
-Simulates trading based on the generated signals, tracking profit/loss.
+# Computes the SIGNAL line using EMA(9) of the MACD values.
+def SIGNAL(macd)
 
-### `draw_data(data, x0=0, x1=0)`
-Plots the closing price data.
+# Identifies buy and sell signals.
+def get_intersections(macd, signal)
 
-### `draw_MACD(macd, signal, x0=0, x1=0)`
-Plots the MACD and Signal lines along with buy/sell signals.
+# Simulates investment decisions and calculates financial performance.
+def simulate(intersections, close, start_money=1000):
 
-### `draw_balance(balance, x0=0, x1=0)`
-Visualizes the account balance changes over time.
-
-### `draw_everything(close, macd, signal, x0=0, x1=0)`
-Combines all visualizations into one comprehensive analysis.
-
-## Notes 📜
-- The first **2N** days of EMA calculations may be unstable.
-- The simulation assumes all-in trading without risk management strategies.
+# Generates a comprehensive visualization of all analytical data.
+def draw_everything(close, macd, signal, balance):
+```
