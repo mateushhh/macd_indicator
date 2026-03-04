@@ -1,25 +1,25 @@
-# MACD Trading Strategy Visualisation 📊
+# MACD Trading Strategy Visualisation
 
-## Project Overview 🛠️
+## Project Overview
 This project implements a trading strategy based on the **MACD (Moving Average Convergence Divergence)** indicator. The algorithm analyzes financial market data, identifies buy and sell signals, and simulates trading decisions, presenting results through visualizations.
 
-## How Does MACD Work? 📈
+## How Does MACD Work?
 MACD helps assess market trends by analyzing two exponential moving averages:
 - **MACD Line**: The difference between the 12-period and 26-period EMA (Exponential Moving Average)
 - **SIGNAL Line**: A 9-period EMA of the MACD values
 
 The crossovers of these lines generate trading signals:
-- 📈 **Buy** – when MACD crosses SIGNAL from below
-- 📉 **Sell** – when MACD crosses SIGNAL from above
+- **Buy** – when MACD crosses SIGNAL from below
+- **Sell** – when MACD crosses SIGNAL from above
 
-## Features 💸
+## Features 
 - Reads market data from a `.csv` file
 - Calculates **EMA, MACD, and SIGNAL**
 - Detects buy and sell signals
 - Simulates trading activity and tracks portfolio value
 - Generates charts with transaction markers and performance analysis
 
-## Requirements 🔧
+## Requirements 
 - Python 3.x
 - `matplotlib` (for data visualization)
 
@@ -28,7 +28,7 @@ Install dependencies:
 pip install matplotlib
 ```
 
-## Usage ▶️
+## Usage 
 1. **Prepare Data**
    - The `.csv` file should contain market data with closing prices in the **5th column** (index `4`).
    - Example data can be obtained from **forexsb.com/historical-forex-data**.
@@ -43,12 +43,12 @@ pip install matplotlib
    - **MACD & SIGNAL** – displays buy and sell signals
    - **Portfolio Simulation** – visualizes how the portfolio value evolves
 
-## Important Notes 📜
+## Important Notes 
 - The first **2N** days of MACD and SIGNAL values may be unstable.
 - The simulation does not account for transaction fees.
 - The strategy works best in long-term market trends.
 
-## Example Output 🏆
+## Example Output 
 ```python
 Data file: ./data/GOLD-USD-1D.csv
 
@@ -74,7 +74,7 @@ Return on investment: 208.09%
 
 ---
 
-## Functions 🔍
+## Functions 
 ```python
 # Reads market data and extracts closing prices.
 def read_data(filename)
